@@ -343,6 +343,8 @@
         function showMainContent() {
             document.getElementById('loginContainer').style.display = 'none';
             document.getElementById('mainContent').style.display = 'block';
+            // Inicializar formulário principal
+            initMainForm();
         }
         
         function authenticate(username, password) {
@@ -387,10 +389,9 @@
                 }
             });
             
-            // Se não estiver autenticado, não continuar com a inicialização do formulário principal
-            if (sessionStorage.getItem('authenticated') !== 'true') {
-                return;
-            }
+        });
+
+        function initMainForm() {
             const edtChave = document.getElementById('edtChave');
             const edtValor = document.getElementById('edtValor');
             const btnAdicionar = document.getElementById('btnAdicionar');
@@ -531,7 +532,7 @@
             addCredential('APIKey', '12345-67890-ABCDE');
             addCredential('ClientId', 'client-special-123');
             addCredential('ClientSecret', 'very-secret-password');
-        });
+        }
     </script>
 </body>
 </html>
