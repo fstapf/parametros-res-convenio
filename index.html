@@ -233,9 +233,40 @@
             color: #008000;
             font-weight: normal;
         }
+        
+        .login-container {
+            max-width: 300px;
+            margin: 100px auto;
+            text-align: center;
+        }
+        
+        .main-content {
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <!-- Formulário de Login -->
+    <div id="loginContainer" class="login-container">
+        <div class="groupbox">
+            <div class="groupbox-title">Acesso ao Sistema</div>
+            <div class="form-row">
+                <label class="label" for="loginUser">Usuário:</label>
+                <input type="text" id="loginUser" class="edit" placeholder="Digite o usuário">
+            </div>
+            <div class="form-row">
+                <label class="label" for="loginPass">Senha:</label>
+                <input type="password" id="loginPass" class="edit" placeholder="Digite a senha">
+            </div>
+            <div class="form-row">
+                <button id="btnLogin" class="button">Entrar</button>
+            </div>
+            <div id="loginError" class="error-message" style="display: none; margin-top: 8px;"></div>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal (inicialmente oculto) -->
+    <div id="mainContent" class="main-content">
     <div class="groupbox">
         <div class="groupbox-title">Serviço RES</div>
         <div class="form-row">
@@ -301,38 +332,63 @@
             </div>
         </div>
     </div>
+    </div>
 
     <script>
-        // Autenticação HTTP Basic
-        function checkAuth() {
-            const auth = btoa('SPDATA:spd260788');
-            const authHeader = 'Basic ' + auth;
-            
-            // Verifica se já foi autenticado nesta sessão
-            if (sessionStorage.getItem('authenticated') === 'true') {
-                return true;
-            }
-            
-            // Simula verificação de autenticação HTTP Basic
-            const userAuth = prompt('Este conteúdo requer autenticação.\n\nUsuário:', '');
-            if (userAuth === null) return false;
-            
-            const passAuth = prompt('Senha:', '');
-            if (passAuth === null) return false;
-            
-            if (userAuth === 'SPDATA' && passAuth === 'spd260788') {
-                sessionStorage.setItem('authenticated', 'true');
-                return true;
-            } else {
-                alert('Credenciais inválidas!');
-                return false;
-            }
+        function showLogin() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('mainContent').style.display = 'none';
+        }
+        
+        function showMainContent() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+        
+        function authenticate(username, password) {
+            return username === 'SPDATA' && password === 'spd260788';
         }
         
         document.addEventListener('DOMContentLoaded', function() {
-            // Verificar autenticação antes de mostrar conteúdo
-            if (!checkAuth()) {
-                document.body.innerHTML = '<div style="text-align: center; margin-top: 100px; font-family: Arial; color: #666;">Acesso negado</div>';
+            // Verificar se já está autenticado
+            if (sessionStorage.getItem('authenticated') === 'true') {
+                showMainContent();
+            } else {
+                showLogin();
+            }
+            
+            // Event listeners para o formulário de login
+            document.getElementById('btnLogin').addEventListener('click', function() {
+                const username = document.getElementById('loginUser').value.trim();
+                const password = document.getElementById('loginPass').value.trim();
+                const errorDiv = document.getElementById('loginError');
+                
+                if (!username || !password) {
+                    errorDiv.textContent = 'Por favor, preencha usuário e senha';
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                
+                if (authenticate(username, password)) {
+                    sessionStorage.setItem('authenticated', 'true');
+                    errorDiv.style.display = 'none';
+                    showMainContent();
+                } else {
+                    errorDiv.textContent = 'Usuário ou senha inválidos';
+                    errorDiv.style.display = 'block';
+                    document.getElementById('loginPass').value = '';
+                }
+            });
+            
+            // Enter no campo senha para submeter
+            document.getElementById('loginPass').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('btnLogin').click();
+                }
+            });
+            
+            // Se não estiver autenticado, não continuar com a inicialização do formulário principal
+            if (sessionStorage.getItem('authenticated') !== 'true') {
                 return;
             }
             const edtChave = document.getElementById('edtChave');
