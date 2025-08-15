@@ -81,13 +81,13 @@
   .groupbox{border:1px solid var(--line);border-radius:6px;padding:12px 10px 8px;margin:8px 4px}
   .groupbox .title{position:relative;top:-22px;display:inline-block;padding:0 6px;margin-bottom:-10px;background:#fff;color:#0a2a5e;font-weight:600}
 
-  /* ===== grid de credenciais ===== */
-  table.grid{width:100%;border-collapse:separate;border-spacing:0;margin-top:6px;border:1px solid var(--line2);border-radius:6px;overflow:hidden;min-height:120px}
-  table.grid th{background:#f6f8fb;color:#111;text-align:left;padding:8px 12px;font-weight:600;border-bottom:1px solid var(--line2);font-size:12px}
-  table.grid td{padding:8px 12px;border-bottom:1px solid #e1e5ec;color:#333;font-size:11px}
-  table.grid tbody tr:nth-child(even) td{background:#fafbfd}
-  table.grid tbody tr:hover td{background:#f0f7ff}
-  tr.selected td{background:#e6f2ff !important;color:#0a2a5e;font-weight:500}
+  /* ===== tabela de credenciais ===== */
+  table.credentials-table{width:100%;border-collapse:separate;border-spacing:0;margin-top:6px;border:1px solid var(--line2);border-radius:6px;overflow:hidden;min-height:120px;table-layout:fixed}
+  table.credentials-table th{background:#f6f8fb;color:#111;text-align:left;padding:8px 12px;font-weight:600;border-bottom:1px solid var(--line2);font-size:12px;width:50%}
+  table.credentials-table td{padding:8px 12px;border-bottom:1px solid #e1e5ec;color:#333;font-size:11px;word-wrap:break-word;overflow:hidden;text-overflow:ellipsis}
+  table.credentials-table tbody tr:nth-child(even) td{background:#fafbfd}
+  table.credentials-table tbody tr:hover td{background:#f0f7ff}
+  table.credentials-table tr.selected td{background:#e6f2ff !important;color:#0a2a5e;font-weight:500}
 
   .row{display:flex;align-items:center;gap:8px;margin:6px 0}
   .btn{height:24px;padding:0 12px;border-radius:4px;border:1px solid var(--line2);background:linear-gradient(#fff,#f5f6f8);cursor:pointer}
@@ -157,7 +157,7 @@
           <div class="label c-grupo">Grupo</div>
           <select class="combo e-grupo"><option>01</option><option>02</option></select>
 
-          <div class="label c-grupo2">Tipo Convênioc</div>
+          <div class="label c-grupo2">Tipo Convênio</div>
           <select class="combo e-grupo2">
             <option>01-PARTICULARES</option><option>02-CONVÊNIOS</option>
           </select>
@@ -278,8 +278,8 @@
                 <button id="btnAdicionar" class="btn">📝 Incluir</button>
               </div>
 
-              <table id="tblCredenciais" class="grid" style="margin-top: 12px;">
-                <thead><tr><th style="padding: 8px 12px; width: 50%;">Chave</th><th style="padding: 8px 12px; width: 50%;">Valor</th></tr></thead>
+              <table id="tblCredenciais" class="credentials-table" style="margin-top: 12px;">
+                <thead><tr><th>Chave</th><th>Valor</th></tr></thead>
                 <tbody></tbody>
               </table>
               <div class="row" style="margin-top: 10px;"><button id="btnRemoverSelecionada" class="btn" disabled>Excluir</button></div>
