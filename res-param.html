@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuração de Credenciais RES</title>
+    <style>
+        body {
+            font-family: 'MS Sans Serif', 'Tahoma', sans-serif;
+            font-size: 11px;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 8px;
+        }
+        
+        .groupbox {
+            border: 2px solid;
+            border-color: #7f7f7f #ffffff #ffffff #7f7f7f;
+            background-color: #f0f0f0;
+            margin: 4px;
+            padding: 8px 8px 4px 8px;
+            position: relative;
+        }
+        
+        .groupbox-title {
+            position: absolute;
+            top: -7px;
+            left: 8px;
+            background-color: #f0f0f0;
+            padding: 0 4px;
+            font-size: 11px;
+            color: #000080;
+            font-weight: normal;
+        }
+        
+        .label {
+            display: inline-block;
+            color: #000000;
+            font-size: 11px;
+            text-align: right;
+            width: 80px;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+        
+        .edit {
+            border: 2px solid;
+            border-color: #7f7f7f #ffffff #ffffff #7f7f7f;
+            background-color: #ffffff;
+            font-family: 'MS Sans Serif', 'Tahoma', sans-serif;
+            font-size: 11px;
+            padding: 2px 4px;
+            width: 200px;
+            height: 19px;
+            vertical-align: middle;
+        }
+        
+        .edit:focus {
+            outline: none;
+        }
+        
+        .combobox {
+            border: 2px solid;
+            border-color: #7f7f7f #ffffff #ffffff #7f7f7f;
+            background-color: #ffffff;
+            font-family: 'MS Sans Serif', 'Tahoma', sans-serif;
+            font-size: 11px;
+            padding: 2px;
+            width: 208px;
+            height: 23px;
+            vertical-align: middle;
+        }
+        
+        .button {
+            border: 2px solid;
+            border-color: #ffffff #7f7f7f #7f7f7f #ffffff;
+            background-color: #f0f0f0;
+            font-family: 'MS Sans Serif', 'Tahoma', sans-serif;
+            font-size: 11px;
+            padding: 4px 12px;
+            margin: 2px;
+            cursor: pointer;
+            color: #000000;
+            min-width: 75px;
+        }
+        
+        .button:active {
+            border-color: #7f7f7f #ffffff #ffffff #7f7f7f;
+        }
+        
+        .button:disabled {
+            color: #7f7f7f;
+        }
+        
+        .stringgrid {
+            border: 2px solid;
+            border-color: #7f7f7f #ffffff #ffffff #7f7f7f;
+            background-color: #ffffff;
+            font-family: 'MS Sans Serif', 'Tahoma', sans-serif;
+            font-size: 11px;
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            margin-top: 4px;
+        }
+        
+        .stringgrid th {
+            background-color: #f0f0f0;
+            border: 1px solid;
+            border-color: #ffffff #7f7f7f #7f7f7f #ffffff;
+            padding: 2px 4px;
+            text-align: left;
+            font-weight: normal;
+            color: #000000;
+        }
+        
+        .stringgrid td {
+            border: 1px solid #c0c0c0;
+            padding: 2px 4px;
+            background-color: #ffffff;
+            color: #000000;
+        }
+        
+        .stringgrid tr.selected td {
+            background-color: #0000ff;
+            color: #ffffff;
+        }
+        
+        .radiogroup {
+            border: 2px solid;
+            border-color: #7f7f7f #ffffff #ffffff #7f7f7f;
+            background-color: #f0f0f0;
+            margin: 4px;
+            padding: 16px 8px 8px 8px;
+            position: relative;
+        }
+        
+        .radiogroup-title {
+            position: absolute;
+            top: -7px;
+            left: 8px;
+            background-color: #f0f0f0;
+            padding: 0 4px;
+            font-size: 11px;
+            color: #000080;
+            font-weight: normal;
+        }
+        
+        .radio-item {
+            margin: 4px 0;
+        }
+        
+        .radio-item input[type="radio"] {
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+        
+        .radio-item label {
+            width: auto;
+            text-align: left;
+            font-size: 11px;
+            color: #000000;
+            vertical-align: middle;
+        }
+        
+        .form-row {
+            margin: 6px 0;
+            display: block;
+        }
+        
+        .form-row-inline {
+            margin: 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-content {
+            background-color: #f0f0f0;
+            margin: 15% auto;
+            border: 2px solid;
+            border-color: #ffffff #7f7f7f #7f7f7f #ffffff;
+            width: 300px;
+            text-align: center;
+            font-family: 'MS Sans Serif', 'Tahoma', sans-serif;
+            font-size: 11px;
+        }
+        
+        .modal-title {
+            background-color: #000080;
+            color: #ffffff;
+            padding: 2px 4px;
+            font-size: 11px;
+            text-align: left;
+        }
+        
+        .modal-body {
+            padding: 16px;
+        }
+        
+        .spinner {
+            border: 2px solid #c0c0c0;
+            border-top: 2px solid #000080;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 12px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            color: #800000;
+            font-weight: normal;
+        }
+        
+        .success-message {
+            color: #008000;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="groupbox">
+        <div class="groupbox-title">Serviço RES</div>
+        <div class="form-row">
+            <label class="label" for="cmbServico">Serviço:</label>
+            <select id="cmbServico" class="combobox">
+                <option value="">Selecione...</option>
+                <option value="planserv">Planserv</option>
+                <option value="unimed">Unimed Brasil</option>
+                <option value="rnds">RNDS</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="groupbox">
+        <div class="groupbox-title">Credenciais</div>
+        <div class="form-row-inline">
+            <label class="label" for="edtChave">Chave:</label>
+            <input type="text" id="edtChave" class="edit" placeholder="Ex: APIKey, ClientId">
+            <label class="label" for="edtValor">Valor:</label>
+            <input type="password" id="edtValor" class="edit" placeholder="Digite o valor">
+            <button id="btnAdicionar" class="button">📝 Incluir</button>
+        </div>
+        
+        <table id="tblCredenciais" class="stringgrid">
+            <thead>
+                <tr>
+                    <th width="50%">Chave</th>
+                    <th width="50%">Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Linhas serão adicionadas dinamicamente -->
+            </tbody>
+        </table>
+        <div class="form-row">
+            <button id="btnRemoverSelecionada" class="button" disabled>Excluir</button>
+        </div>
+    </div>
+
+    <div class="radiogroup">
+        <div class="radiogroup-title">Ambiente</div>
+        <div class="radio-item">
+            <input type="radio" id="rdProducao" name="ambiente" value="producao">
+            <label for="rdProducao">Produção</label>
+        </div>
+        <div class="radio-item">
+            <input type="radio" id="rdHomologacao" name="ambiente" value="homologacao">
+            <label for="rdHomologacao">Homologação</label>
+        </div>
+        <div class="form-row">
+            <button id="btnTestarConexao" class="button">Testar Conexão</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modalTeste" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">Teste de Conexão</div>
+            <div class="modal-body">
+                <div id="spinner" class="spinner"></div>
+                <div id="modalMessage">Testando conexão...</div>
+                <button id="btnFecharModal" class="button" style="display: none;">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Autenticação HTTP Basic
+        function checkAuth() {
+            const auth = btoa('SPDATA:spd260788');
+            const authHeader = 'Basic ' + auth;
+            
+            // Verifica se já foi autenticado nesta sessão
+            if (sessionStorage.getItem('authenticated') === 'true') {
+                return true;
+            }
+            
+            // Simula verificação de autenticação HTTP Basic
+            const userAuth = prompt('Este conteúdo requer autenticação.\n\nUsuário:', '');
+            if (userAuth === null) return false;
+            
+            const passAuth = prompt('Senha:', '');
+            if (passAuth === null) return false;
+            
+            if (userAuth === 'SPDATA' && passAuth === 'spd260788') {
+                sessionStorage.setItem('authenticated', 'true');
+                return true;
+            } else {
+                alert('Credenciais inválidas!');
+                return false;
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar autenticação antes de mostrar conteúdo
+            if (!checkAuth()) {
+                document.body.innerHTML = '<div style="text-align: center; margin-top: 100px; font-family: Arial; color: #666;">Acesso negado</div>';
+                return;
+            }
+            const edtChave = document.getElementById('edtChave');
+            const edtValor = document.getElementById('edtValor');
+            const btnAdicionar = document.getElementById('btnAdicionar');
+            const btnRemoverSelecionada = document.getElementById('btnRemoverSelecionada');
+            const btnTestarConexao = document.getElementById('btnTestarConexao');
+            const modalTeste = document.getElementById('modalTeste');
+            const modalMessage = document.getElementById('modalMessage');
+            const spinner = document.getElementById('spinner');
+            const btnFecharModal = document.getElementById('btnFecharModal');
+            const tblCredenciais = document.getElementById('tblCredenciais').getElementsByTagName('tbody')[0];
+            
+            let selectedRow = null;
+
+            // Adicionar credencial
+            btnAdicionar.addEventListener('click', function() {
+                const chave = edtChave.value.trim();
+                const valor = edtValor.value.trim();
+                
+                if (!chave) {
+                    alert('Informe a chave');
+                    return;
+                }
+                
+                if (!valor) {
+                    alert('Informe o valor');
+                    return;
+                }
+                
+                addCredential(chave, valor);
+                edtChave.value = '';
+                edtValor.value = '';
+                edtChave.focus();
+            });
+
+            // Remover credencial selecionada
+            btnRemoverSelecionada.addEventListener('click', function() {
+                if (selectedRow) {
+                    selectedRow.remove();
+                    selectedRow = null;
+                    btnRemoverSelecionada.disabled = true;
+                }
+            });
+
+            // Testar conexão
+            btnTestarConexao.addEventListener('click', function() {
+                const rows = tblCredenciais.rows;
+                let clientSecret = null;
+                
+                for (let i = 0; i < rows.length; i++) {
+                    const chave = rows[i].cells[0].textContent.toLowerCase();
+                    if (chave.includes('secret') || chave.includes('clientsecret')) {
+                        clientSecret = rows[i].getAttribute('data-valor-real');
+                        break;
+                    }
+                }
+                
+                // Abrir modal
+                modalTeste.style.display = 'block';
+                modalMessage.textContent = 'Testando conexão...';
+                modalMessage.className = '';
+                spinner.style.display = 'block';
+                btnFecharModal.style.display = 'none';
+                
+                // Simular teste de conexão
+                setTimeout(function() {
+                    spinner.style.display = 'none';
+                    btnFecharModal.style.display = 'inline-block';
+                    
+                    if (clientSecret === 'a1234567') {
+                        modalMessage.textContent = 'Erro: HTTP 401 - Não autorizado. Verifique suas credenciais.';
+                        modalMessage.className = 'error-message';
+                    } else {
+                        modalMessage.textContent = 'Conexão bem-sucedida!';
+                        modalMessage.className = 'success-message';
+                    }
+                }, 2000);
+            });
+
+            // Fechar modal
+            btnFecharModal.addEventListener('click', function() {
+                modalTeste.style.display = 'none';
+            });
+
+            // Fechar modal clicando fora
+            modalTeste.addEventListener('click', function(e) {
+                if (e.target === modalTeste) {
+                    modalTeste.style.display = 'none';
+                }
+            });
+
+            // Adicionar credencial à tabela
+            function addCredential(chave, valor) {
+                const row = tblCredenciais.insertRow();
+                
+                // Coluna Chave
+                const cellChave = row.insertCell(0);
+                cellChave.textContent = chave;
+                
+                // Coluna Valor (sempre mascarado)
+                const cellValor = row.insertCell(1);
+                cellValor.textContent = '••••••••';
+                
+                // Armazenar valor real
+                row.setAttribute('data-valor-real', valor);
+                
+                // Seleção da linha
+                row.addEventListener('click', function() {
+                    // Desselecionar linha anterior
+                    if (selectedRow) {
+                        selectedRow.classList.remove('selected');
+                    }
+                    
+                    // Selecionar nova linha
+                    selectedRow = row;
+                    row.classList.add('selected');
+                    btnRemoverSelecionada.disabled = false;
+                });
+                
+                // Duplo clique para editar
+                row.addEventListener('dblclick', function() {
+                    const chaveTexto = row.cells[0].textContent;
+                    const valorReal = row.getAttribute('data-valor-real');
+                    
+                    edtChave.value = chaveTexto;
+                    edtValor.value = valorReal;
+                    edtChave.focus();
+                    
+                    // Remover a linha atual pois será reincluída
+                    row.remove();
+                    if (row === selectedRow) {
+                        selectedRow = null;
+                        btnRemoverSelecionada.disabled = true;
+                    }
+                });
+            }
+
+            // Adicionar algumas credenciais de exemplo
+            addCredential('APIKey', '12345-67890-ABCDE');
+            addCredential('ClientId', 'client-special-123');
+            addCredential('ClientSecret', 'very-secret-password');
+        });
+    </script>
+</body>
+</html>
